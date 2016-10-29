@@ -23,5 +23,5 @@
     
     //web socket closed
     ws.onclose = function() {
-      console.log('Websockets closed);		
+      console.log('Websockets closed');		
     }
