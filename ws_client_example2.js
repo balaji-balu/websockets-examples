@@ -1,8 +1,8 @@
 /*
    web client example using web sockets events 
    
-   ref [Writing WebSocket client applications (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
-)
+   ref "Writing WebSocket client applications (MDN) @ 
+      https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications
 */
     var ws = new WebSocket("ws://" + process.env.REACT_APP_API_SERVER + '/pasws'); 
   
