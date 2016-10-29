@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- http://cjihrig.com/blog/creating-your-own-websocket-echo-client/ -->	
+  <title>WebSocket Echo Client</title>
+  <meta charset="UTF-8" />
+  <script>
+    "use strict";
+    // Initialize everything when the window finishes loading
+    window.addEventListener("load", function(event) {
+      var status = document.getElementById("status");
+      var url = document.getElementById("url");
+      var open = document.getElementById("open");
+      var close = document.getElementById("close");
+      var send = document.getElementById("send");
+      var text = document.getElementById("text");
+      var message = document.getElementById("message");
+      var socket;
+	  var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJhbGFqaSIsImlhdCI6MTQ2NDU4NTcwNn0.X4PFBqU_DyU8TA3Lu1Wg6AcPPwG2QIUzprBhWGhFeb0";
+	  
+      status.textContent = "Not Connected";
+      url.value = "ws://localhost:8080/pasws?token=" + token;
+      close.disabled = true;
+      send.disabled = true;
+
+      // Create a new connection when the Connect button is clicked
+      open.addEventListener("click", function(event) {
+        open.disabled = true;
+        socket = new WebSocket(url.value); /*, {
+			query: 'token=' + token
+		}); //, "echo-protocol", );*/
+
+        socket.addEventListener("open", function(event) {
+          close.disabled = false;
+          send.disabled = false;
+          status.textContent = "Connected";
+        });
+
+        // Display messages received from the server
+        socket.addEventListener("message", function(event) {
+		  var data = JSON.parse(event.data);
+          message.textContent = "Server Says: " + ((data) ? data.msg : '');
+        });
+
+        // Display any errors that occur
+        socket.addEventListener("error", function(event) {
+          message.textContent = "Error: " + event;
+        });
+
+        socket.addEventListener("close", function(event) {
+          open.disabled = false;
+          status.textContent = "Not Connected";
+        });
+      });
+
+      // Close the connection when the Disconnect button is clicked
+      close.addEventListener("click", function(event) {
+        close.disabled = true;
+        send.disabled = true;
+        message.textContent = "";
+        socket.close();
+      });
+
+      // Send text to the server when the Send button is clicked
+      send.addEventListener("click", function(event) {
+        socket.send(JSON.stringify({msg:text.value}));
+        text.value = "";
+      });
+    });
+  </script>
+</head>
+<body>
+  Status: <span id="status"></span><br />
+  URL: <input id="url" /><br />
+  <input id="open" type="button" value="Connect" />&nbsp;
+  <input id="close" type="button" value="Disconnect" /><br />
+  <input id="send" type="button" value="Send" />&nbsp;
+  <input id="text" /><br />
+  <span id="message"></span>
+</body>
+</html>
