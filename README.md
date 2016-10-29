@@ -1,2 +1,10 @@
 # websockets-examples
-create websockets server using vanilla nodejs and node-restify server and connect from browser to test the server.
+create a basic nodejs based Web Sockets server using [ws](https://github.com/websockets/ws)
+
+check this file for 
+check this file for integration with [node-restify](https://github.com/restify/node-restify)
+
+check this file for Web sockets client example
+
+check whether your browser support web sockets
+
