@@ -6,28 +6,22 @@
 */
     var ws = new WebSocket("ws://" + process.env.REACT_APP_API_SERVER + '/pasws'); 
   
-    ws.onOpen = function(event) {
+    ws.onopen = function() {
       console.log('connected');
-      ws.send(Date.now().toString(), {mask: true});
+      ws.send('message from client');
     }
         // Display messages received from the server
-    ws.onmessage = function message(data, flags) {
-      console.log('Roundtrip time: ' + (Date.now() - parseInt(data, 10)) + 'ms', flags);
+    ws.onmessage = function message(message, flags) {
+      console.log('message received', message.data);
 
-      setTimeout(function timeout() {
-        ws.send(Date.now().toString(), {mask: true});
-      }, 500);
-
-		  //var data = JSON.parse(event.data);
-      //message.textContent = "Server Says: " + ((data) ? data.msg : '');
     }
 
     // Display any errors that occur
-    ws.onerror = function(event) {
-      message.textContent = "Error: " + event;
+    ws.onerror = function(error) {
+      console.error("Websockets Error: " + error);
     }
-
-    ws.onclose = function(event) {
-        open.disabled = false;
-        status.textContent = "Not Connected";
+    
+    //web socket closed
+    ws.onclose = function() {
+      console.log('Websockets closed);		
     }
